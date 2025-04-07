@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 import Login from './components/Login';
-import Exam from './components/Exam';
+import Dashboard from './components/Dashboard';
+import Header from './components/Header';
 
-function App() {
-  const [token, setToken] = useState<string | null>(null);
+const App = () => {
+  const [token, setToken] = useState('');
 
   return (
     <div>
-      {!token ? (
-        <Login onLogin={(newToken: string) => setToken(newToken)} />
-      ) : (
-        <Exam token={token} />
-      )}
+      <Header />
+      {token ? <Dashboard token={token} /> : <Login onLogin={setToken} />}
     </div>
   );
-}
+};
 
 export default App;

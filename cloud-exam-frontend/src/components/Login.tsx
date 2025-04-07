@@ -1,52 +1,28 @@
 import React, { useState } from 'react';
+import { loginUser } from '../api';
+import '../index.css';
 
-interface LoginProps {
-  onLogin: (token: string) => void;
-}
+const Login = ({ onLogin }: { onLogin: (token: string) => void }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-const Login: React.FC<LoginProps> = ({ onLogin }) => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleLogin = async () => {
     try {
-      const res = await fetch('https://cloud-online-exam.up.railway.app/token', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!res.ok) throw new Error('Login failed');
-
-      const data = await res.json();
-      onLogin(data.access_token);
-    } catch (err) {
-      alert('Login failed. Check your credentials.');
+      const data = await loginUser(email, password);
+      if (data.access_token) onLogin(data.access_token);
+      else alert('Login failed!');
+    } catch {
+      alert('Something went wrong');
     }
   };
 
   return (
-    <form onSubmit={handleLogin}>
+    <div className="container">
       <h2>Login</h2>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <button type="submit">Login</button>
-    </form>
+      <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
+      <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" />
+      <button onClick={handleLogin}>Login</button>
+    </div>
   );
 };
 

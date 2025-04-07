@@ -1,37 +1,10 @@
-# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-*$py.class
-
-# Virtual environment
-venv/
-.env
+*.env
 .env.*
-
-# VS Code settings
-.vscode/
-
-# Mac/Windows system files
-.DS_Store
-Thumbs.db
-
-# Node modules (if frontend is in same repo)
+venv/
 node_modules/
-build/
-dist/
-
-# Docker artifacts
-*.dockerignore
-Dockerfile
-
-# Log files
 *.log
-
-# Test cache
-.pytest_cache/
-coverage/
-
-# Frontend build artifacts (optional)
-frontend/node_modules/
-frontend/dist/
-frontend/build/
+.vscode/
+.DS_Store
+dist/
