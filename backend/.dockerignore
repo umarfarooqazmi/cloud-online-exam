@@ -1,15 +1,37 @@
+# Byte-compiled / optimized / DLL files
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
-.env
-.venv/
-env/
+*.py[cod]
+*$py.class
+
+# Virtual environment
 venv/
-.idea/
+.env
+.env.*
+
+# VS Code settings
 .vscode/
-*.db
-*.log
+
+# Mac/Windows system files
 .DS_Store
-.git
-.gitignore
+Thumbs.db
+
+# Node modules (if frontend is in same repo)
+node_modules/
+build/
+dist/
+
+# Docker artifacts
+*.dockerignore
+Dockerfile
+
+# Log files
+*.log
+
+# Test cache
+.pytest_cache/
+coverage/
+
+# Frontend build artifacts (optional)
+frontend/node_modules/
+frontend/dist/
+frontend/build/
