@@ -31,7 +31,7 @@ export const loginUser = async (email: string, password: string) => {
 
 export const fetchExams = async (token: string) => {
   console.log("Sending token in fetchExams:", token); // ✅ Debug
-  const res = await fetch(`${API_URL}/exams`, {
+  const res = await fetch(`${API_URL}/exams/`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
