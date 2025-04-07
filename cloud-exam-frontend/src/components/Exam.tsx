@@ -18,6 +18,9 @@ const Exam = ({ exams }: { exams: any[] }) => {
           <div key={exam.id} className="card">
             <h3>{formatField(exam.title)}</h3>
             <p>{formatField(exam.description)}</p>
+            <button className="exam-button">
+              Take Exam
+            </button>
           </div>
         ))
       )}

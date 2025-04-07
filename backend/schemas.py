@@ -1,29 +1,37 @@
+# backend/schemas.py
 from pydantic import BaseModel, EmailStr
 from typing import List, Optional
 from uuid import UUID
 
-
-# -------------------------
-# Authentication Schemas
-# -------------------------
+# ------------------------- 
+# Authentication Schemas 
+# ------------------------- 
 class UserCreate(BaseModel):
     email: EmailStr
     password: str
-
 
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
-
 class Token(BaseModel):
     access_token: str
     token_type: str
 
+class TokenData(BaseModel):
+    email: Optional[str] = None
 
-# -------------------------
-# Exam & Question Schemas
-# -------------------------
+class User(BaseModel):
+    id: UUID
+    email: EmailStr
+    is_admin: bool
+
+    class Config:
+        orm_mode = True
+
+# ------------------------- 
+# Exam & Question Schemas 
+# ------------------------- 
 class QuestionBase(BaseModel):
     question_text: str
     option_a: str
@@ -32,41 +40,42 @@ class QuestionBase(BaseModel):
     option_d: str
     correct_option: str
 
-
 class QuestionCreate(QuestionBase):
     pass
 
-
 class QuestionOut(QuestionBase):
     id: UUID
-
+    
     class Config:
         orm_mode = True
 
-
-class ExamCreate(BaseModel):
+class ExamBase(BaseModel):
     title: str
     description: Optional[str] = None
+
+class ExamCreate(ExamBase):
     questions: List[QuestionCreate]
 
-
-class ExamOut(BaseModel):
+class Exam(ExamBase):
     id: UUID
-    title: str
-    description: Optional[str]
-    questions: List[QuestionOut]
-
+    created_by: UUID
+    
     class Config:
         orm_mode = True
 
+class ExamOut(ExamBase):
+    id: UUID
+    questions: List[QuestionOut]
+    
+    class Config:
+        orm_mode = True
 
-# -------------------------
-# Submission & Answer Schemas
-# -------------------------
+# ------------------------- 
+# Submission & Answer Schemas 
+# ------------------------- 
 class AnswerCreate(BaseModel):
     question_id: UUID
     selected_option: str
-
 
 class ResponseCreate(BaseModel):
     exam_id: UUID

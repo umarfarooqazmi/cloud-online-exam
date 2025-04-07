@@ -2,7 +2,7 @@ const API_URL = "https://cloud-online-exam-production.up.railway.app"; // Railwa
 
 export const loginUser = async (email: string, password: string) => {
   const formData = new URLSearchParams();
-  formData.append("username", email); // MUST be "username"
+  formData.append("username", email); // MUST be "username" for OAuth2PasswordRequestForm
   formData.append("password", password);
 
   const res = await fetch(`${API_URL}/auth/login`, {
@@ -29,8 +29,29 @@ export const loginUser = async (email: string, password: string) => {
   return res.json(); // returns { access_token: "..." }
 };
 
+export const registerUser = async (email: string, password: string) => {
+  const res = await fetch(`${API_URL}/auth/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+  });
+
+  if (!res.ok) {
+    let error = "Registration failed";
+    try {
+      const errData = await res.json();
+      error = errData.detail || error;
+    } catch (_) {}
+    throw new Error(error);
+  }
+
+  return res.json(); // returns { access_token: "..." }
+};
+
 export const fetchExams = async (token: string) => {
-  console.log("Sending token in fetchExams:", token); // ✅ Debug
+  console.log("Sending token in fetchExams:", token); // Debug
   const res = await fetch(`${API_URL}/exams/`, {
     headers: {
       Authorization: `Bearer ${token}`,

@@ -1,6 +1,8 @@
+# backend/crud.py
 from sqlalchemy.orm import Session
-from models import User
-from auth import get_password_hash, verify_password
+
+from .models import User
+from .auth import get_password_hash, verify_password
 
 def get_user_by_email(db: Session, email: str):
     return db.query(User).filter(User.email == email).first()

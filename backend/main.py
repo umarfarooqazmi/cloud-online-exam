@@ -1,9 +1,9 @@
 # backend/main.py
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from database import Base, engine
-from routers import exam, user
+
+from .database import Base, engine
+from .routers import exam, user
 
 # Create all tables
 Base.metadata.create_all(bind=engine)

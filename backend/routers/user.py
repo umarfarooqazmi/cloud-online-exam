@@ -1,17 +1,18 @@
+# backend/routers/user.py
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
 
-from database import get_db
-from auth import create_access_token
-from crud import create_user, authenticate_user, get_user_by_email
-from schemas import UserCreate, Token
+from ..database import get_db
+from ..auth import create_access_token
+from ..crud import create_user, authenticate_user, get_user_by_email
+from ..schemas import UserCreate, Token
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 @router.post("/register", response_model=Token)
 def register(user: UserCreate, db: Session = Depends(get_db)):
-    # Check if user already exists by email (not by logging in)
+    # Check if user already exists by email
     existing_user = get_user_by_email(db, user.email)
     if existing_user:
         raise HTTPException(status_code=400, detail="Email already registered")
