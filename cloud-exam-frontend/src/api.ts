@@ -1,4 +1,4 @@
-const API_URL = 'https://your-backend-url.railway.app'; // replace with actual Railway URL
+const API_URL = "https://cloud-online-exam-production.up.railway.app";
 
 export const loginUser = async (email: string, password: string) => {
   const res = await fetch(`${API_URL}/token`, {
@@ -8,6 +8,12 @@ export const loginUser = async (email: string, password: string) => {
     },
     body: JSON.stringify({ username: email, password }),
   });
+
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.detail || 'Login failed');
+  }
+
   return res.json();
 };
 
@@ -17,5 +23,11 @@ export const fetchExams = async (token: string) => {
       Authorization: `Bearer ${token}`,
     },
   });
+
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.detail || 'Failed to fetch exams');
+  }
+
   return res.json();
 };
