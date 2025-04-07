@@ -1,47 +1,45 @@
 import React, { useState } from 'react';
 import { loginUser } from '../api';
-import '../index.css';
 
 const Login = ({ onLogin }: { onLogin: (token: string) => void }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleLogin = async () => {
-    setLoading(true);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
       const data = await loginUser(email, password);
-      if (data.access_token) {
-        onLogin(data.access_token);
-      } else {
-        alert('Login failed: Invalid credentials.');
-      }
-    } catch (error: any) {
-      console.error('Login Error:', error);
-      alert(error.message || 'Something went wrong');
-    } finally {
-      setLoading(false);
+      console.log("Token received:", data.access_token); // ✅ Debug
+      localStorage.setItem("token", data.access_token); // ✅ Store token
+      onLogin(data.access_token); // ✅ Pass to App
+    } catch (err: any) {
+      setError(err.message);
     }
   };
 
   return (
-    <div className="container">
+    <div className="login-container">
       <h2>Login</h2>
-      <input
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-        type="email"
-      />
-      <input
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        type="password"
-        placeholder="Password"
-      />
-      <button onClick={handleLogin} disabled={loading}>
-        {loading ? 'Logging in...' : 'Login'}
-      </button>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <form onSubmit={handleSubmit}>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          required
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          required
+          autoComplete="current-password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button type="submit">Login</button>
+      </form>
     </div>
   );
 };

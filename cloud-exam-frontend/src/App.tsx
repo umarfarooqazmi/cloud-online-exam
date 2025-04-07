@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import Header from './components/Header';
 
 const App = () => {
   const [token, setToken] = useState('');
+
+  useEffect(() => {
+    const stored = localStorage.getItem("token");
+    if (stored) setToken(stored);
+  }, []);
 
   return (
     <div>
